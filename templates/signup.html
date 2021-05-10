@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block contents %}
+<form action="" id="signup" method="POST" novalidate>
+{% csrf_token %}
+{{ form.emailmobile }}
+{{ form.full_name }}
+{{ form.username }}
+{{ form.password }}
+<input type="submit" value="signup">
+</form>
+{% endblock %}
