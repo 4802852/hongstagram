@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.db.models.manager import BaseManager
 
 class UserManager(BaseUserManager):
-    def create_user(self, emailmobile, username, password, full_name, **extra_fields):
+    def create_user(self, emailmobile, full_name, username, password, **extra_fields):
         user = self.model(
             emailmobile = emailmobile,
             full_name = full_name,
@@ -14,8 +14,8 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, emailmobile, username, password, full_name=None):
-        user = self.create_user('0123456789', username, password, 'superuser')
+    def create_superuser(self, emailmobile, full_name, username, password):
+        user = self.create_user('0123456789','superuser', username, password)
         user.is_superuser = True
         user.is_staff = True
         user.is_admin = True

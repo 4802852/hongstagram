@@ -1,12 +1,12 @@
 from .models import User
-from .forms import SignUpFrom
+from .forms import SignUpForm
 from django.views import generic
 from django.shortcuts import redirect
 
 class SignUpView(generic.CreateView):
     model = User
     template_name = 'signup.html'
-    form_class = SignUpFrom
+    form_class = SignUpForm
 
     def get_success_url(self):
         return redirect('/')
