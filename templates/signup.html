@@ -7,10 +7,7 @@
 {% block contents %}
 <form action="" id="signup" method="POST" novalidate>
 {% csrf_token %}
-{{ form.emailmobile }}
-{{ form.full_name }}
-{{ form.username }}
-{{ form.password }}
+{{ form.as_p }}
 <input type="submit" value="signup">
 </form>
 {% endblock %}

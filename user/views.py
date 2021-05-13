@@ -1,19 +1,33 @@
 from .models import User
 from .forms import SignUpForm
 from django.views import generic
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 
-class SignUpView(generic.CreateView):
-    model = User
-    template_name = 'signup.html'
-    form_class = SignUpForm
+def signup(request):
+    if request.method == SignUpForm(request.POST):
+        signup_form = SignUpForm(request.POST)
+        if signup_form.is_valid():
+            signup_form.save()
+            return redirect('/')
+    else:
+        signup_form = SignUpForm()
 
-    def get_success_url(self):
-        return redirect('/')
+    context = {
+        'form': signup_form,
+    }
+    return render(request, 'signup.html', context)
+
+# class SignUpView(generic.CreateView):
+#     model = User
+#     template_name = 'signup.html'
+#     form_class = SignUpForm
+
+#     def get_success_url(self):
+#         return redirect('/')
     
-    def form_valid(self, form):
-        self.object = form.save()
-        return redirect(self.get_success_url())
+#     def form_valid(self, form):
+#         self.object = form.save()
+#         return redirect(self.get_success_url())
 
 
 
