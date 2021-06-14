@@ -1,7 +1,26 @@
 from .models import User
-from .forms import SignUpForm
+from .forms import LoginForm, SignUpForm
 from django.views import generic
 from django.shortcuts import redirect, render
+from django.contrib.auth import authenticate, login
+
+
+class LoginView(generic.FormView):
+    template_name = 'home.html'
+    form_class = LoginForm
+    success_url = '/posts'
+
+    def form_valid(self, form):
+        emailmobile = form.cleaned_data.get('emailmobile')
+        password = form.cleaned_data.get('password')
+        user = authenticate(
+            self.request, emailmobile=emailmobile, password=password)
+
+        if user:
+            self.request.session['emailmobile'] = emailmobile
+            login(self.request, user)
+        return super().form_valid(form)
+
 
 def signup(request):
     if request.method == SignUpForm(request.POST):
@@ -15,7 +34,7 @@ def signup(request):
     context = {
         'form': signup_form,
     }
-    return render(request, 'signup.html', context)
+    return render(request, 'user/signup.html', context)
 
 # class SignUpView(generic.CreateView):
 #     model = User
@@ -24,11 +43,10 @@ def signup(request):
 
 #     def get_success_url(self):
 #         return redirect('/')
-    
+
 #     def form_valid(self, form):
 #         self.object = form.save()
 #         return redirect(self.get_success_url())
-
 
 
 # PASSWORD_MINIMUM_LENGTH = 8
@@ -55,11 +73,11 @@ def signup(request):
 #                 and password
 #             ):
 #                 return JsonResponse({'message': 'KEY_ERROR'}, status=400)
-            
+
 #             if email:
 #                 if not re.match(email_pattern, email):
 #                     return JsonResponse({'message': 'EMAIL_VALIDATION_ERROR'}, status=400)
-            
+
 #             if mobile_number:
 #                 if not re.match(mobile_number_pattern, mobile_number):
 #                     return JsonResponse({'message':'MOBILE_NUMBER_VALIDATION_ERROR'}, status=400)
@@ -85,7 +103,6 @@ def signup(request):
 #                 password = password
 #             )
 #             return JsonResponse({'message': 'SUCCESS'}, status=201)
-        
+
 #         except JSONDecodeError:
 #             return JsonResponse({'message': 'JSON_DECODE_ERROR'}, status=400)
-

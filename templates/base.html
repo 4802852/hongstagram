@@ -17,11 +17,15 @@
     {% for message in messages %}
     {% if message.tags %}
     <script>
-        alert("{{ message.message }}") <!-- message alert script -->
+        alert("{{ message.message }}") 
     </script>
     {% endif %}
     {% endfor %}
     {% endif %}
+
+    {% block scripts %}
+    <!-- block 삽입 부분 -->
+    {% endblock %}
 </body>
 
 </html>
