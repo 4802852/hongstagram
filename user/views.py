@@ -2,27 +2,38 @@ from .models import User
 from .forms import LoginForm, SignUpForm
 from django.views import generic
 from django.shortcuts import redirect, render
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+import re
 
 
 class LoginView(generic.FormView):
-    template_name = 'home.html'
+    template_name = 'login.html'
     form_class = LoginForm
-    success_url = '/posts'
+    success_url = '/post'
 
     def form_valid(self, form):
         emailmobile = form.cleaned_data.get('emailmobile')
         password = form.cleaned_data.get('password')
-        user = authenticate(
-            self.request, emailmobile=emailmobile, password=password)
-
+        email_pattern = re.compile('[^@]+@[^@]+\.[^@]+')
+        mobile_number_pattern = re.compile('^[0-9]{1,15}$')
+        if re.match(email_pattern, emailmobile):
+            user = authenticate(
+                self.request, email=emailmobile, password=password)
+        elif re.match(mobile_number_pattern, emailmobile):
+            user = authenticate(
+                self.request, mobile_number=emailmobile, password=password)
         if user:
             self.request.session['emailmobile'] = emailmobile
             login(self.request, user)
         return super().form_valid(form)
 
 
-def signup(request):
+def logout_view(request):
+    logout(request)
+    return redirect('/')
+
+
+def signup_view(request):
     if request.method == SignUpForm(request.POST):
         signup_form = SignUpForm(request.POST)
         if signup_form.is_valid():
