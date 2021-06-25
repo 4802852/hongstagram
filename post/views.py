@@ -1,4 +1,6 @@
 from django.shortcuts import render
 
 def home(request):
-    return render(request, 'post/home.html', {})
+    username = request.session["username"]
+    context = {"username": username}
+    return render(request, 'post/home.html', context)

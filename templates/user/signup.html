@@ -7,7 +7,15 @@
 {% block contents %}
 <form action="" id="signup" method="POST" novalidate>
     {% csrf_token %}
-    {{ form.as_p }}
+    {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            <input type="{{ field.filed.widget.input_type }}" class="form-control" id=" field.id_for_label" placeholder="{{ field.label }}" name="{{ field.name }}">            
+        </div>
+        {% if field.errors %}
+            <span>{{ field.errors }}</span>
+        {% endif %}
+    {% endfor %}
     <input type="submit" value="signup">
 </form>
 {% endblock %}
