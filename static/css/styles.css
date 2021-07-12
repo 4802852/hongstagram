@@ -1,0 +1,19 @@
+div.header {
+  border-bottom: 1px solid black;
+  display: flex;
+}
+
+#logo {
+  flex: 0 0 auto;
+  width: 20%;
+}
+
+#search {
+  flex: 0 0 auto;
+  width: 60%;
+}
+
+#profile {
+  flex: 0 0 auto;
+  width: 20%;
+}
