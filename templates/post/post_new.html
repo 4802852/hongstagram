@@ -1,0 +1,17 @@
+{% extends 'post/post_base.html' %}
+
+{% block contents2 %}
+<form action="" id="upload" method="POST" novalidate>
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}">            
+        </div>
+        {% if field.errors %}
+            <span>{{ field.errors }}</span>
+        {% endif %}
+    {% endfor %}
+    <input type="submit" value="post">
+</form>
+{% endblock %}

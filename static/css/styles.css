@@ -3,17 +3,17 @@ div.header {
   display: flex;
 }
 
-#logo {
+div.logo {
   flex: 0 0 auto;
   width: 20%;
 }
 
-#search {
+div.search {
   flex: 0 0 auto;
   width: 60%;
 }
 
-#profile {
+div.profile {
   flex: 0 0 auto;
   width: 20%;
 }

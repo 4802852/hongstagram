@@ -2,6 +2,17 @@
 
 {% block contents2 %}
 <div class="post-content">
-    post_list
+    {% if post_list %}
+        {% for post in post_list %}
+        <div class="post">
+            <a href="{{ post.get_absolute_url }}">
+                <p>{{ post.writer }}</p>
+                <p>{{ post.text }}</p>
+            </a>
+        </div>
+        {% endfor %}
+    {% else %}
+    <p>아직 등록된 게시글이 없습니다.</p>
+    {% endif %}
 </div>
 {% endblock %}

@@ -14,6 +14,7 @@ def login_view(request):
             emailmobile = login_form.cleaned_data.get("emailmobile")
             user = User.objects.get(Q(email=emailmobile) | Q(mobile_number=emailmobile))
             request.session["username"] = user.username
+            login(request, user)
             return redirect("/post")
     else:
         login_form = LoginForm()

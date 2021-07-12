@@ -10,7 +10,7 @@ class Post(models.Model):
         return self.id
     
     def get_absolute_url(self):
-        return reverse('post', args=[str(self.id)])
+        return reverse('post-detail', args=[str(self.id)])
     
     class Meta:
         db_table = "포스트"

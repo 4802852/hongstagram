@@ -6,11 +6,12 @@
 
 {% block contents %}
 <div class="header">
-    <div id="logo">Hongstagram</div>
-    <div id="search">Search Form</div>
-    <div id="info">
-        welcome {{ user.get_username }}  
+    <div class="logo">Hongstagram</div>
+    <div class="search">Search Form</div>
+    <div class="profile">
+        welcome {{ user.get_username }}
         <a href="{% url 'logout' %}">logout!</a>
+        <a href="{% url 'post-new' %}">new post!</a>
     </div>
 </div>
 
