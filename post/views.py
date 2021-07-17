@@ -129,6 +129,7 @@ def search(request):
         search_result = search_result.filter(
             Q(hashtags__name__icontains=b)
             ).order_by('-id')
+        return render(request, 'post/home.html', {'b': b, 'post_list': search_result})
     else:
         messages.error(request, '검색어를 입력해주세요.')
-    return render(request, 'post/home.html', {'b': b, 'post_list': search_result})
+        return redirect('home')
