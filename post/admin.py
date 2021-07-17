@@ -1,17 +1,20 @@
 from django.contrib import admin
 
-from .models import Post
+from .models import Post, Photo
+
+
+class PhotoInline(admin.TabularInline):
+    model = Photo
 
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = (
-        "id",
-        "writer",
-    )
+    list_display = ("writer",)
     fields = [
-        "id",
         "writer",
         "text",
     ]
-    search_fields = ("id", "writer")
+    search_fields = ("writer", "text")
+    inlines = [
+        PhotoInline,
+    ]

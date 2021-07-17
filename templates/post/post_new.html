@@ -1,8 +1,11 @@
 {% extends 'post/post_base.html' %}
 
 {% block contents2 %}
-<form action="" id="upload" method="POST" novalidate>
+<form action="" id="upload" method="POST" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
+    <div class="form-group">
+        <input type="file" name="imgs" multiple>
+    </div>
     {% for field in form %}
         <div class="form-group">
             <label for="{{ field.id_for_label }}">{{ field.label }}</label>

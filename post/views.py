@@ -2,7 +2,7 @@ from .forms import NewPostForm
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import generic
 
-from .models import Post
+from .models import Photo, Post
 from user.models import User
 
 
@@ -54,6 +54,11 @@ def post_new(request):
             post = form.save(commit=False)
             post.writer = user
             post.save()
+            for img in request.FILES.getlist("imgs"):
+                photo = Photo()
+                photo.post = post
+                photo.image = img
+                photo.save()
             return redirect("post-detail", post.id)
 
     else:

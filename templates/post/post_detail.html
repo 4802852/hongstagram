@@ -1,10 +1,10 @@
-{% extends 'post/post_base.html' %}
-
-{% block contents2 %}
+{% extends 'post/post_base.html' %} {% block contents2 %}
 <div class="">
-    <div>img</div>
-    <div>
-        {{post.writer}} / {{post.text}}
-    </div>
+  <div>
+    {% for photo in post.photo_set.all %}
+    <img src="{{photo.image.url}}" width="500" />
+    {% endfor %}
+  </div>
+  <div>{{post.writer}} / {{post.text}}</div>
 </div>
 {% endblock %}
