@@ -7,4 +7,8 @@
   </div>
   <div>{{post.writer}} / {{post.text}}</div>
 </div>
+<div>
+  <a href="{% url 'post-delete' post.id %}">delete post</a><br>
+  <a href="{% url 'post-update' post.id %}">update post</a>
+</div>
 {% endblock %}

@@ -1,20 +1,31 @@
-{% extends 'post/post_base.html' %}
-
-{% block contents2 %}
-<form action="" id="upload" method="POST" enctype="multipart/form-data" novalidate>
-    {% csrf_token %}
-    <div class="form-group">
-        <input type="file" name="imgs" multiple>
-    </div>
-    {% for field in form %}
-        <div class="form-group">
-            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-            <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}">            
-        </div>
-        {% if field.errors %}
-            <span>{{ field.errors }}</span>
-        {% endif %}
-    {% endfor %}
-    <input type="submit" value="post">
+{% extends 'post/post_base.html' %} {% block contents2 %}
+<form
+  action=""
+  id="upload"
+  method="POST"
+  enctype="multipart/form-data"
+  novalidate
+>
+  {% csrf_token %}
+  <div class="form-group">
+    <input type="file" name="imgs" id="image" multiple />
+  </div>
+  {{ form.text }} {% if update %}
+  <input id="write" type="submit" value="update" />
+  {% else %}
+  <input id="write" type="submit" value="post" />
+  {% endif %}
 </form>
+
+<script type="text/javascript">
+  var checkUnload = true;
+  $(window).on("beforeunload", function () {
+    if (checkUnload)
+      return "이 페이지를 벗어나면 작성된 내용은 저장되지 않습니다.";
+  });
+  $("#write").on("click", function () {
+    checkUnload = false;
+    $("submit").submit();
+  });
+</script>
 {% endblock %}

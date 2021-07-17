@@ -1,3 +1,7 @@
+import os
+
+from django.contrib import messages
+from hongstagram import settings
 from .forms import NewPostForm
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import generic
@@ -47,12 +51,9 @@ def post_detail_view(request, pk):
 def post_new(request):
     if request.method == "POST":
         form = NewPostForm(request.POST)
-        username = request.session["username"]
-        user = User.objects.get(username=username)
-
         if form.is_valid():
             post = form.save(commit=False)
-            post.writer = user
+            post.writer = request.user
             post.save()
             for img in request.FILES.getlist("imgs"):
                 photo = Photo()
@@ -64,3 +65,51 @@ def post_new(request):
     else:
         form = NewPostForm()
     return render(request, "post/post_new.html", {"form": form})
+
+
+def post_delete(request, pk):
+    post = Post.objects.get(id=pk)
+    if post.writer == request.user or request.user.level == "0":
+        photos = Photo.objects.filter(post=post)
+        for photo in photos:
+            os.remove(os.path.join(settings.MEDIA_ROOT, photo.image.path))
+            photo.delete()
+        post.delete()
+        messages.success(request, "삭제되었습니다.")
+        return redirect("home")
+    else:
+        messages.error(request, "본인의 게시글만 삭제할 수 있습니다.")
+    return redirect("post-detail", pk)
+
+
+def post_update(request, pk):
+    post = Post.objects.get(id=pk)
+    if request.method == "POST":
+        if post.writer == request.user:
+            if request.FILES:
+                photos = Photo.objects.filter(post=post)
+                for photo in photos:
+                    os.remove(os.path.join(settings.MEDIA_ROOT, photo.image.path))
+                    photo.delete()
+            form = NewPostForm(request.POST, instance=post)
+            if form.is_valid():
+                post = form.save(commit=False)
+                post.writer = request.user
+                post.save()
+                for img in request.FILES.getlist("imgs"):
+                    photo = Photo()
+                    photo.post = post
+                    photo.image = img
+                    photo.save()
+                return redirect("post-detail", post.id)
+    else:
+        if post.writer == request.user:
+            form = NewPostForm(instance=post)
+            context = {
+                "form": form,
+                "update": True,
+            }
+            return render(request, "post/post_new.html", context)
+        else:
+            messages.error(request, "본인 게시글만 수정할 수 있습니다.")
+            return redirect("post-detail", pk)
