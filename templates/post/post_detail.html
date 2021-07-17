@@ -6,7 +6,8 @@
         <img src="{{photo.image.url}}" width="500"/>
       {% endfor %}
     </div>
-    <div>{{post.writer}}
+    <div>
+      <a href="{{post.writer.get_absolute_url}}">{{post.writer}}</a>
       /
       {{post.text}}
     </div>

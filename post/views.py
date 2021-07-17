@@ -121,10 +121,9 @@ def post_update(request, pk):
 def search(request):
     b = request.GET.get('b', '')
     if b:
-        username_search = User.objects.filter(username=b)
+        username_search = User.objects.get(username=b)
         if username_search:
-            # 프로필페이지 개발 후 연결
-            return redirect('home')
+            return redirect('profile', username_search.username)
         search_result = Post.objects.all()
         search_result = search_result.filter(
             Q(hashtags__name__icontains=b)
@@ -133,3 +132,18 @@ def search(request):
     else:
         messages.error(request, '검색어를 입력해주세요.')
         return redirect('home')
+
+
+def profile_page(request, username):
+    user = User.objects.get(username=username)
+    if user == request.user:
+        mypage = True
+    else:
+        mypage = False
+    post_list = Post.objects.filter(writer=user)
+    context = {
+        'profile_user': user,
+        'mypage': mypage,
+        'post_list': post_list,
+    }
+    return render(request, 'post/profile.html', context)

@@ -6,16 +6,17 @@
       <div class="logo">Hongstagram</div>
     </a>
     <div class="search">
-        <form class="search-form" action="{% url 'search' %}" method="GET">
-            <input type="text" placeholder="Search" aria-label="Search" name="b" value="{{b}}">
-            <input type="submit" value="검색!">
-        </form>
+      <form class="search-form" action="{% url 'search' %}" method="GET">
+        <input type="text" placeholder="Search" aria-label="Search" name="b" value="{{b}}">
+        <input type="submit" value="검색!">
+      </form>
     </div>
     <div class="profile">
       welcome
       {{ user.get_username }}
       <a href="{% url 'logout' %}">logout!</a>
       <a href="{% url 'post-new' %}">new post!</a>
+      <a href="{% url 'profile' user.get_username %}">mypage!</a>
     </div>
   </div>
 
