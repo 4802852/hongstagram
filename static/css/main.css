@@ -1,0 +1,17 @@
+div.header {
+  border-bottom: 1px solid black;
+  display: flex; }
+  div.header .logo {
+    flex: 0 0 auto;
+    width: 20%; }
+  div.header .search {
+    flex: 0 0 auto;
+    width: 60%; }
+  div.header .profile {
+    flex: 0 0 auto;
+    width: 20%; }
+
+body {
+  background-color: white; }
+
+/*# sourceMappingURL=main.css.map */

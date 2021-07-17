@@ -1,14 +1,22 @@
-{% extends 'post/post_base.html' %} {% block contents2 %}
-<div class="">
-  <div>
-    {% for photo in post.photo_set.all %}
-    <img src="{{photo.image.url}}" width="500" />
-    {% endfor %}
+{% extends 'post/post_base.html' %}
+{% block contents2 %}
+  <div class="">
+    <div>
+      {% for photo in post.photo_set.all %}
+        <img src="{{photo.image.url}}" width="500"/>
+      {% endfor %}
+    </div>
+    <div>{{post.writer}}
+      /
+      {{post.text}}
+    </div>
+    <div>
+      {% for tag in post.hashtags.all %}{{tag}}
+      {% endfor %}
+    </div>
   </div>
-  <div>{{post.writer}} / {{post.text}}</div>
-</div>
-<div>
-  <a href="{% url 'post-delete' post.id %}">delete post</a><br>
-  <a href="{% url 'post-update' post.id %}">update post</a>
-</div>
+  <div>
+    <a href="{% url 'post-delete' post.id %}">delete post</a><br>
+    <a href="{% url 'post-update' post.id %}">update post</a>
+  </div>
 {% endblock %}

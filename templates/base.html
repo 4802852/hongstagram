@@ -1,33 +1,33 @@
 <html>
-{% load static %}
-<head>
-    <meta charset='utf-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" />
+  {% load static %}
+  {% load sass_tags %}
+
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}"/>
+    <link href="{% sass_src 'css/main.scss' %}" rel="stylesheet" type="text/css"/>
     {% block header %}
-    <!-- header 삽입 부분 -->
+      <!-- header 삽입 부분 -->
     {% endblock %}
-</head>
+  </head>
 
-<body style="background-color: #d6d6d6;"> 
+  <body>
     {% block contents %}
-    <!-- body 삽입 부분 -->
+      <!-- body 삽입 부분 -->
     {% endblock %}
-
     {% if messages %}
-    {% for message in messages %}
-    {% if message.tags %}
-    <script>
-        alert("{{ message.message }}") 
-    </script>
+      {% for message in messages %}
+        {% if message.tags %}
+          <script>
+            alert("{{ message.message }}");
+          </script>
+        {% endif %}
+      {% endfor %}
     {% endif %}
-    {% endfor %}
-    {% endif %}
-
     {% block scripts %}
-    <!-- block 삽입 부분 -->
+      <!-- script 삽입 부분 -->
     {% endblock %}
-</body>
+  </body>
 
 </html>

@@ -2,10 +2,17 @@ from django.db import models
 from django.urls import reverse
 from hongstagram import settings
 
-import uuid
+import uuid, re
 from datetime import datetime
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill, Resize, ResizeToFit
+
+
+class Hashtag(models.Model):
+    name = models.CharField(max_length=40, unique=True)
+
+    def __str__(self):
+        return self.name
 
 
 def get_file_path(instance, filename):
@@ -23,9 +30,22 @@ class Post(models.Model):
         verbose_name="작성자",
     )
     text = models.TextField(max_length=1000)
+    date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    hashtags = models.ManyToManyField(Hashtag, blank=True)
 
+    def hashtag_save(self):
+        self.hashtags.set([])
+        hashtagset = re.findall(r'#(\w+)\b', self.text)
+
+        if not hashtagset:
+            return
+
+        for tag in hashtagset:
+            tag, tag_created = Hashtag.objects.get_or_create(name=tag)
+            self.hashtags.add(tag)
+    
     def __str__(self):
-        return self.id
+        return str(self.id)
 
     def get_absolute_url(self):
         return reverse("post-detail", args=[str(self.id)])

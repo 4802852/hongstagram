@@ -9,12 +9,13 @@ class PhotoInline(admin.TabularInline):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ("writer",)
+    list_display = ("id", "writer", "date")
     fields = [
         "writer",
         "text",
+        "hashtags",
     ]
-    search_fields = ("writer", "text")
+    search_fields = ("writer", "date")
     inlines = [
         PhotoInline,
     ]

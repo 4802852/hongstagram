@@ -1,31 +1,28 @@
-{% extends 'post/post_base.html' %} {% block contents2 %}
-<form
-  action=""
-  id="upload"
-  method="POST"
-  enctype="multipart/form-data"
-  novalidate
->
-  {% csrf_token %}
-  <div class="form-group">
-    <input type="file" name="imgs" id="image" multiple />
-  </div>
-  {{ form.text }} {% if update %}
-  <input id="write" type="submit" value="update" />
-  {% else %}
-  <input id="write" type="submit" value="post" />
-  {% endif %}
-</form>
+{% extends 'post/post_base.html' %}
+{% block contents2 %}
+  <form action="" id="upload" method="POST" enctype="multipart/form-data" novalidate="novalidate">
+    {% csrf_token %}
+    <div class="form-group">
+      <input type="file" name="imgs" id="image" multiple="multiple"/>
+    </div>
+    {{ form.text | safe }}
+    {% if update %}
+      <input id="write" type="submit" value="update"/>
+    {% else %}
+      <input id="write" type="submit" value="post"/>
+    {% endif %}
+  </form>
 
-<script type="text/javascript">
-  var checkUnload = true;
-  $(window).on("beforeunload", function () {
-    if (checkUnload)
-      return "이 페이지를 벗어나면 작성된 내용은 저장되지 않습니다.";
-  });
-  $("#write").on("click", function () {
-    checkUnload = false;
-    $("submit").submit();
-  });
-</script>
+  <script type="text/javascript">
+    var checkUnload = true;
+    $(window).on("beforeunload", function () {
+      if (checkUnload) 
+        return "이 페이지를 벗어나면 작성된 내용은 저장되지 않습니다.";
+      }
+    );
+    $("#write").on("click", function () {
+      checkUnload = false;
+      $("submit").submit();
+    });
+  </script>
 {% endblock %}

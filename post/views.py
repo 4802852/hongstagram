@@ -5,6 +5,7 @@ from hongstagram import settings
 from .forms import NewPostForm
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import generic
+from django.db.models import Q
 
 from .models import Photo, Post
 from user.models import User
@@ -55,13 +56,13 @@ def post_new(request):
             post = form.save(commit=False)
             post.writer = request.user
             post.save()
+            post.hashtag_save()
             for img in request.FILES.getlist("imgs"):
                 photo = Photo()
                 photo.post = post
                 photo.image = img
                 photo.save()
             return redirect("post-detail", post.id)
-
     else:
         form = NewPostForm()
     return render(request, "post/post_new.html", {"form": form})
@@ -96,11 +97,13 @@ def post_update(request, pk):
                 post = form.save(commit=False)
                 post.writer = request.user
                 post.save()
+                post.hashtag_save()
                 for img in request.FILES.getlist("imgs"):
                     photo = Photo()
                     photo.post = post
                     photo.image = img
                     photo.save()
+                messages.success(request, "수정되었습니다.")
                 return redirect("post-detail", post.id)
     else:
         if post.writer == request.user:
@@ -113,3 +116,19 @@ def post_update(request, pk):
         else:
             messages.error(request, "본인 게시글만 수정할 수 있습니다.")
             return redirect("post-detail", pk)
+
+
+def search(request):
+    b = request.GET.get('b', '')
+    if b:
+        username_search = User.objects.filter(username=b)
+        if username_search:
+            # 프로필페이지 개발 후 연결
+            return redirect('home')
+        search_result = Post.objects.all()
+        search_result = search_result.filter(
+            Q(hashtags__name__icontains=b)
+            ).order_by('-id')
+    else:
+        messages.error(request, '검색어를 입력해주세요.')
+    return render(request, 'post/home.html', {'b': b, 'post_list': search_result})
