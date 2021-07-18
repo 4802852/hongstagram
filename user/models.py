@@ -40,6 +40,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     password = models.CharField(max_length=300)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    introduction = models.TextField(max_length=500, null=True, blank=True)
 
     USERNAME_FIELD = "username"
 

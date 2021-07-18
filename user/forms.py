@@ -73,3 +73,56 @@ class SignUpForm(forms.Form):
                 password=self.cleaned_data["password"],
             )
             return User
+
+
+def email_validator(value):
+    email_pattern = re.compile("[^@]+@[^@]+\.[^@]+")
+    if not re.match(email_pattern, value):
+        raise forms.ValidationError("이메일 주소를 정확히 입력해주세요.")
+
+
+def mobile_validator(value):
+    mobile_number_pattern = re.compile("^[0-9]{1,15}$")
+    if not re.match(mobile_number_pattern, value):
+        raise forms.ValidationError("휴대폰 번호를 정확히 입력해주세요.")
+
+
+class ProfileUpdateForm(forms.Form):
+    email = forms.CharField(max_length=100, label="이메일주소", validators=[email_validator])
+    mobile_number = forms.CharField(max_length=20, label="휴대폰번호", validators=[mobile_validator])
+    full_name = forms.CharField(
+        max_length=50, label="성명", error_messages={"required": "성명을 입력해주세요."}
+    )
+    username = forms.CharField(
+        max_length=50, label="아이디", error_messages={"required": "아이디를 입력해주세요."}
+    )
+    introduction = forms.CharField(max_length=500)
+
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        if User.objects.filter(Q(email=email)):
+            raise forms.ValidationError("이메일 주소가 있습니다.")
+        return email
+
+    def clean_mobile(self):
+        mobile_number = self.cleaned_data["mobile_number"]
+        if User.objects.filter(Q(mobile_number=mobile_number)):
+            raise forms.ValidationError("동일한 휴대폰 번호가 있습니다.")
+        return mobile_number
+
+    def clean_username(self):
+        username = self.cleaned_data["username"]
+        if User.objects.filter(Q(username=username)):
+            raise forms.ValidationError("동일한 아이디가 존재합니다.")
+        return username
+    
+    def save(self):
+        if self.is_valid():
+            User.objects.create_user(
+                email=self.cleaned_data["email"],
+                mobile_number=self.cleaned_data["mobile_number"],
+                full_name=self.cleaned_data["full_name"],
+                username=self.cleaned_data["username"],
+                introduction=self.cleaned_data["introduction"]
+            )
+            return User

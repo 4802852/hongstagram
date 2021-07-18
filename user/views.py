@@ -1,6 +1,6 @@
 from django.db.models import Q
 from .models import User
-from .forms import LoginForm, SignUpForm
+from .forms import LoginForm, ProfileUpdateForm, SignUpForm
 from django.views import generic
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
@@ -39,3 +39,18 @@ def signup_view(request):
         "form": signup_form,
     }
     return render(request, "user/signup.html", context)
+
+
+def profile_update_view(request):
+    if request.method == "POST":
+        profile_update_form = ProfileUpdateForm(request.POST)
+        if profile_update_form.is_valid():
+            profile_update_form.save()
+            return redirect("profile", profile_update_form.username)
+    else:
+        profile_update_form = ProfileUpdateForm()
+    
+    context = {
+        "form": profile_update_form,
+    }
+    return render(request, "post/profile_update.html", context)
