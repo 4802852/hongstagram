@@ -7,7 +7,7 @@
     following / followed<br>
     follow!<br>
     {% if mypage %}
-      <a href="">edit profile</a><br>
+      <a href="{% url 'profile-update' %}">edit profile</a><br>
       <a href="">edit password</a>
     {% endif %}
   </div>

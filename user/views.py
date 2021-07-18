@@ -42,13 +42,14 @@ def signup_view(request):
 
 
 def profile_update_view(request):
+    user = request.user
     if request.method == "POST":
-        profile_update_form = ProfileUpdateForm(request.POST)
+        profile_update_form = ProfileUpdateForm(request.POST, instance=user)
         if profile_update_form.is_valid():
             profile_update_form.save()
-            return redirect("profile", profile_update_form.username)
+            return redirect("profile", user.username)
     else:
-        profile_update_form = ProfileUpdateForm()
+        profile_update_form = ProfileUpdateForm(instance=user)
     
     context = {
         "form": profile_update_form,
