@@ -1,10 +1,35 @@
 {% extends 'post/post_base.html' %}
+{% load static %}
 {% block contents2 %}
   <div class="">
     <div>
-      {% for photo in post.photo_set.all %}
-        <img src="{{photo.image.url}}" width="500"/>
-      {% endfor %}
+      <div id="wrapper">
+        <div id="slider-wrap">
+          <ul id="slider">
+            {% for photo in post.photo_set.all %}
+              <li>
+                <div>
+                  <h3>{{photo.id}}</h3>
+                </div>
+                <img src="{{photo.image.url}}" width="500"/>
+              </li>
+            {% endfor %}
+          </ul>
+          <!--controls-->
+          <div class="btns" id="next">
+            <i class="fa fa-arrow-right"></i>
+          </div>
+          <div class="btns" id="previous">
+            <i class="fa fa-arrow-left"></i>
+          </div>
+          <div id="counter"></div>
+
+          <div id="pagination-wrap">
+            <ul></ul>
+          </div>
+          <!--controls-->
+        </div>
+      </div>
     </div>
     <div>
       <a href="{{post.writer.get_absolute_url}}">{{post.writer}}</a>
@@ -20,4 +45,5 @@
     <a href="{% url 'post-delete' post.id %}">delete post</a><br>
     <a href="{% url 'post-update' post.id %}">update post</a>
   </div>
+  <script src="{% static 'js/post-detail.js' %}"></script>
 {% endblock %}
