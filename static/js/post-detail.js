@@ -1,103 +1,37 @@
-//current position
-var pos = 0;
-//number of slides
-var totalSlides = $('#slider-wrap ul li').length;
-//get the slide width
-var sliderWidth = $('#slider-wrap').width();
+var slideWrapper = document.querySelector(".container");
+var slides = document.querySelectorAll(".item");
+var totalSlides = slides.length; // item의 갯수
 
+var sliderWidth = slideWrapper.clientWidth; // container의 width
+var slideIndex = 0;
+var slider = document.querySelector(".slider");
 
-$(document).ready(function(){
-  
-  
-  /*****************
-   BUILD THE SLIDER
-  *****************/
-  //set width to be 'x' times the number of slides
-  $('#slider-wrap ul#slider').width(sliderWidth*totalSlides);
-  
-    //next slide  
-  $('#next').click(function(){
-    slideRight();
-  });
-  
-  //previous slide
-  $('#previous').click(function(){
-    slideLeft();
-  });
-  
-  
-  
-  /*************************
-   //*> OPTIONAL SETTINGS
-  ************************/
-  //automatic slider
-  var autoSlider = setInterval(slideRight, 3000);
-  
-  //for each slide 
-  $.each($('#slider-wrap ul li'), function() { 
+slider.style.width = sliderWidth * totalSlides + "px";
 
-     //create a pagination
-     var li = document.createElement('li');
-     $('#pagination-wrap ul').append(li);    
-  });
-  
-  //counter
-  countSlides();
-  
-  //pagination
-  pagination();
-  
-  //hide/show controls/btns when hover
-  //pause automatic slide when hover
-  $('#slider-wrap').hover(
-    function(){ $(this).addClass('active'); clearInterval(autoSlider); }, 
-    function(){ $(this).removeClass('active'); autoSlider = setInterval(slideRight, 3000); }
-  );
-  
-  
-
-});//DOCUMENT READY
-  
-
-
-/***********
- SLIDE LEFT
-************/
-function slideLeft(){
-  pos--;
-  if(pos==-1){ pos = totalSlides-1; }
-  $('#slider-wrap ul#slider').css('left', -(sliderWidth*pos));  
-  
-  //*> optional
-  countSlides();
-  pagination();
+function showSlides(n) {
+  slideIndex = n;
+  if (slideIndex == -1) {
+    slideIndex = totalSlides - 1;
+  } else if (slideIndex === totalSlides) {
+    slideIndex = 0;
+  }
+  slider.style.left = -(sliderWidth * slideIndex) + "px";
 }
 
-
-/************
- SLIDE RIGHT
-*************/
-function slideRight(){
-  pos++;
-  if(pos==totalSlides){ pos = 0; }
-  $('#slider-wrap ul#slider').css('left', -(sliderWidth*pos)); 
-  
-  //*> optional 
-  countSlides();
-  pagination();
+function plusSlides(n) {
+  showSlides((slideIndex += n));
 }
 
-
-
-  
-/************************
- //*> OPTIONAL SETTINGS
-************************/
-function countSlides(){
-  $('#counter').html(pos+1 + ' / ' + totalSlides);
+function currentSlide(n) {
+  showSlides((slideIndex = n));
 }
 
-function pagination(){
-  $('#pagination-wrap ul li').removeClass('active');
-  $('#pagination-wrap ul li:eq('+pos+')').addClass('active');
-}
+var nextBtn = document.querySelector(".next");
+var prevBtn = document.querySelector(".prev");
+
+nextBtn.addEventListener("click", function () {
+  plusSlides(1);
+});
+prevBtn.addEventListener("click", function () {
+  plusSlides(-1);
+});

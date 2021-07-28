@@ -3,29 +3,19 @@
 {% block contents2 %}
   <div class="">
     <div>
-      <div id="wrapper">
-        <div id="slider-wrap">
-          <ul id="slider">
+      <div class="wrapper">
+        <div class="container">
+          <ul class="slider">
             {% for photo in post.photo_set.all %}
-              <li>
-                <div>
-                  <h3>{{photo.id}}</h3>
-                </div>
-                <img src="{{photo.image.url}}" width="500"/>
+              <li class="item">
+                <img src="{{photo.image.url}}"/>
               </li>
             {% endfor %}
           </ul>
           <!--controls-->
-          <div class="btns" id="next">
-            <i class="fa fa-arrow-right"></i>
-          </div>
-          <div class="btns" id="previous">
-            <i class="fa fa-arrow-left"></i>
-          </div>
-          <div id="counter"></div>
-
-          <div id="pagination-wrap">
-            <ul></ul>
+          <div class="btn">
+            <a class="prev" style="text-decoration: none;">&#10094;</a>
+            <a class="next" style="text-decoration: none;">&#10095;</a>
           </div>
           <!--controls-->
         </div>

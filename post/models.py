@@ -59,7 +59,7 @@ class Photo(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
     image = ProcessedImageField(
         upload_to=get_file_path,
-        processors=[ResizeToFit(width=500, height=500, upscale=True)],
+        processors=[ResizeToFill(width=700, height=700, upscale=True)],
         null=True,
         blank=True,
         format="JPEG",
