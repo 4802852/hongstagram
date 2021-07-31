@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block header %}{% endblock %}
 {% block contents %}
   <div class="header">
@@ -48,4 +49,7 @@
       {% endif %}
     </ul>
   {% endif %}
+{% endblock %}
+{% block scripts %}
+  <script src="{% static 'js/post-detail.js' %}"></script>
 {% endblock %}

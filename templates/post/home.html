@@ -5,9 +5,33 @@
     {% if post_list %}
       {% for post in post_list %}
         <div class="post">
+          <a href="">
+            <div class="profile">
+              <a href="{{post.writer.get_absolute_url}}">{{post.writer}}</a>
+            </div>
+          </a>
+          <div>
+            <div class="wrapper">
+              <div class="container">
+                <ul class="slider">
+                  {% for photo in post.photo_set.all %}
+                    <li class="item">
+                      <img src="{{photo.image.url}}"/>
+                    </li>
+                  {% endfor %}
+                </ul>
+                <!--controls-->
+                <div class="btn">
+                  <a class="prev" style="text-decoration: none;">&#10094;</a>
+                  <a class="next" style="text-decoration: none;">&#10095;</a>
+                </div>
+                <!--controls-->
+              </div>
+            </div>
+          </div>
           <a href="{{ post.get_absolute_url }}">
-            <p>{{ post.writer }}</p>
-            <p>{{ post.text }}</p>
+            <div class="writer">{{ post.writer }}</div>
+            <div class="content">{{ post.text }}</div>
           </a>
         </div>
       {% endfor %}

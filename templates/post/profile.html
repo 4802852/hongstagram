@@ -1,28 +1,33 @@
 {% extends 'post/post_base.html' %}
 
 {% block contents2 %}
-  <div>
-    profile<br>
-    {{profile_user.get_username}}<br>
-    following / followed<br>
-    follow!<br>
-    {% if mypage %}
-      <a href="{% url 'profile-update' %}">edit profile</a><br>
-      <a href="">edit password</a>
-    {% endif %}
-  </div>
-  <div class="post-content">
-    {% if post_list %}
-      {% for post in post_list %}
-        <div class="post">
-          <a href="{{ post.get_absolute_url }}">
-            <p>{{ post.writer }}</p>
-            <p>{{ post.text }}</p>
-          </a>
-        </div>
-      {% endfor %}
-    {% else %}
-      <p>아직 등록된 게시글이 없습니다.</p>
-    {% endif %}
+  <div class="my-page">
+    <div class="my-page-header">
+      profile<br>
+      {{profile_user.get_username}}<br>
+      following / followed<br>
+      follow!<br>
+      {% if mypage %}
+        <a href="{% url 'profile-update' %}">edit profile</a><br>
+        <a href="">edit password</a>
+      {% endif %}
+      <div class="my-page-post">
+        {% if post_list %}
+          {% for post in post_list %}
+            <div class="post-content">
+              <a href="{{ post.get_absolute_url }}">
+                {% for photo in post.photo_set.all %}
+                  {% if forloop.counter == 1 %}
+                    <img src="{{photo.image.url}}"/>
+                  {% endif %}
+                {% endfor %}
+              </a>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p>아직 등록된 게시글이 없습니다.</p>
+        {% endif %}
+      </div>
+    </div>
   </div>
 {% endblock %}

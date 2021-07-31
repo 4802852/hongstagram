@@ -1,0 +1,21 @@
+.my-page {
+  display: flex;
+}
+
+.my-page-header {
+  margin: 0 auto;
+  width: 750px;
+}
+
+.my-page-post {
+  width: 750px;
+  margin: 0 auto;
+  .post-content {
+    float: left;
+    width: 32%;
+    margin: 5px;
+    img {
+      width: 100%;
+    }
+  }
+}

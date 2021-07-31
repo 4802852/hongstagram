@@ -56,6 +56,30 @@ ul {
   -o-transition: all 0.25s cubic-bezier(1, 0.01, 0.32, 1);
   transition: all 0.25s cubic-bezier(1, 0.01, 0.32, 1); }
 
+.post-content {
+  display: flex; }
+
+.post {
+  margin: 0 auto;
+  width: 750px; }
+
+.my-page {
+  display: flex; }
+
+.my-page-header {
+  margin: 0 auto;
+  width: 750px; }
+
+.my-page-post {
+  width: 750px;
+  margin: 0 auto; }
+  .my-page-post .post-content {
+    float: left;
+    width: 32%;
+    margin: 5px; }
+    .my-page-post .post-content img {
+      width: 100%; }
+
 body {
   background-color: gray; }
 
