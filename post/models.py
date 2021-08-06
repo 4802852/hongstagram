@@ -33,9 +33,11 @@ class Post(models.Model):
     date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     hashtags = models.ManyToManyField(Hashtag, blank=True)
 
+    like = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="like_post", blank=True)
+
     def hashtag_save(self):
         self.hashtags.set([])
-        hashtagset = re.findall(r'#(\w+)\b', self.text)
+        hashtagset = re.findall(r"#(\w+)\b", self.text)
 
         if not hashtagset:
             return
@@ -43,7 +45,7 @@ class Post(models.Model):
         for tag in hashtagset:
             tag, tag_created = Hashtag.objects.get_or_create(name=tag)
             self.hashtags.add(tag)
-    
+
     def __str__(self):
         return str(self.id)
 

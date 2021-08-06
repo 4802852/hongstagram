@@ -20,6 +20,12 @@
         </div>
       </div>
     </div>
+    <div id="like">
+      <a href="{% url 'post-like' post.id %}">
+        <div class="btn_like active">좋아요!</div>
+        <div class="btn_like">좋아요 취소!</div>
+      </div>
+    </a>
     <div>
       <a href="{{post.writer.get_absolute_url}}">{{post.writer}}</a>
       /

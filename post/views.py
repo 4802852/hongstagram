@@ -1,11 +1,14 @@
 import os
 
 from django.contrib import messages
+from django.http import HttpResponseForbidden
+from django.http.response import HttpResponseRedirect
 from hongstagram import settings
 from .forms import NewPostForm
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import generic
 from django.db.models import Q
+from urllib.parse import urlparse
 
 from .models import Photo, Post
 from user.models import User
@@ -119,19 +122,17 @@ def post_update(request, pk):
 
 
 def search(request):
-    b = request.GET.get('b', '')
+    b = request.GET.get("b", "")
     if b:
         username_search = User.objects.get(username=b)
         if username_search:
-            return redirect('profile', username_search.username)
+            return redirect("profile", username_search.username)
         search_result = Post.objects.all()
-        search_result = search_result.filter(
-            Q(hashtags__name__icontains=b)
-            ).order_by('-id')
-        return render(request, 'post/home.html', {'b': b, 'post_list': search_result})
+        search_result = search_result.filter(Q(hashtags__name__icontains=b)).order_by("-id")
+        return render(request, "post/home.html", {"b": b, "post_list": search_result})
     else:
-        messages.error(request, '검색어를 입력해주세요.')
-        return redirect('home')
+        messages.error(request, "검색어를 입력해주세요.")
+        return redirect("home")
 
 
 def profile_page(request, username):
@@ -142,8 +143,27 @@ def profile_page(request, username):
         mypage = False
     post_list = Post.objects.filter(writer=user)
     context = {
-        'profile_user': user,
-        'mypage': mypage,
-        'post_list': post_list,
+        "profile_user": user,
+        "mypage": mypage,
+        "post_list": post_list,
     }
-    return render(request, 'post/profile.html', context)
+    return render(request, "post/profile.html", context)
+
+
+class PostLike(generic.base.View):
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            return HttpResponseForbidden()
+        else:
+            print(kwargs)
+            if "post_id" in kwargs:
+                post_id = kwargs["post_id"]
+                post = Post.objects.get(id=post_id)
+                user = request.user
+                if user in post.like.all():
+                    post.like.remove(user)
+                else:
+                    post.like.add(user)
+                referer_url = request.META.get("HTTP_REFERER")
+                path = urlparse(referer_url).path
+                return HttpResponseRedirect(path)

@@ -65,3 +65,11 @@ ul {
   margin: 0 auto;
   width: 750px;
 }
+
+.btn_like {
+  display: inline-block;
+}
+
+.btn_like.active {
+  display: none;
+}
