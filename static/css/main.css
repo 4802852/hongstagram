@@ -63,10 +63,10 @@ ul {
   margin: 0 auto;
   width: 750px; }
 
-.btn_like {
+.btn_like.active {
   display: inline-block; }
 
-.btn_like.active {
+.btn_like {
   display: none; }
 
 .my-page {

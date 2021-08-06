@@ -29,6 +29,23 @@
               </div>
             </div>
           </div>
+          <div id="like">
+            <a href="{% url 'post-like' post.id %}">
+              <div class="btn_like {% if user not in post.like.all %} active {% endif %}">좋아요!</div>
+              <div class="btn_like {% if user in post.like.all %} active {% endif %}">좋아요 취소!</div>
+            </a>
+            {% if post.like.all.count == 0 %}
+              <span></span>
+            {% elif post.like.all.count >= 5 %}
+              <span>{{ post.like.all.count }}
+                명이 좋아합니다.</span>
+            {% else %}
+              {% for likeuser in post.like.all %}
+                {{likeuser}}
+              {% endfor %}
+              님이 좋아합니다.
+            {% endif %}
+          </div>
           <a href="{{ post.get_absolute_url }}">
             <div class="writer">{{ post.writer }}</div>
             <div class="content">{{ post.text }}</div>

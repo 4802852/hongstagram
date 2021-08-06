@@ -1,8 +1,7 @@
 import os
 
 from django.contrib import messages
-from django.http import HttpResponseForbidden
-from django.http.response import HttpResponseRedirect
+from django.http import HttpResponseForbidden, HttpResponseRedirect
 from hongstagram import settings
 from .forms import NewPostForm
 from django.shortcuts import get_object_or_404, redirect, render
@@ -152,18 +151,16 @@ def profile_page(request, username):
 
 class PostLike(generic.base.View):
     def get(self, request, *args, **kwargs):
-        if not request.user.is_authenticated():
-            return HttpResponseForbidden()
+        if "pk" in kwargs:
+            post_id = kwargs["pk"]
+            post = Post.objects.get(id=post_id)
+            user = request.user
+            if user in post.like.all():
+                post.like.remove(user)
+            else:
+                post.like.add(user)
+            referer_url = request.META.get("HTTP_REFERER")
+            path = urlparse(referer_url).path
+            return HttpResponseRedirect(path)
         else:
-            print(kwargs)
-            if "post_id" in kwargs:
-                post_id = kwargs["post_id"]
-                post = Post.objects.get(id=post_id)
-                user = request.user
-                if user in post.like.all():
-                    post.like.remove(user)
-                else:
-                    post.like.add(user)
-                referer_url = request.META.get("HTTP_REFERER")
-                path = urlparse(referer_url).path
-                return HttpResponseRedirect(path)
+            return HttpResponseForbidden()
