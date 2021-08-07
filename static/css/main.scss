@@ -3,10 +3,10 @@
 @import "static/css/profile.scss";
 
 body {
-  background-color: gray;
+  background-color: lightgray;
 }
 
-div.header {
+.header {
   border-bottom: 1px solid black;
   display: flex;
   .logo {

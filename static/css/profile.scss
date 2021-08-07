@@ -5,6 +5,12 @@
 .my-page-header {
   margin: 0 auto;
   width: 750px;
+  .follow_btn {
+    display: none;
+    &.active {
+      display: inline-block;
+    }
+  }
 }
 
 .my-page-post {

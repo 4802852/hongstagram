@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from django.db.models.manager import BaseManager
 from django.urls import reverse
+from hongstagram import settings
 import re
 
 
@@ -41,6 +41,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     introduction = models.TextField(max_length=500, null=True, blank=True)
+
+    following = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="user_following", blank=True)
+    followed = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="user_followed", blank=True)
 
     USERNAME_FIELD = "username"
 

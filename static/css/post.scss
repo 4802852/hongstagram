@@ -57,19 +57,17 @@ ul {
   transition: all 0.25s cubic-bezier(1, 0.01, 0.32, 1);
 }
 
-.post-content {
-  display: flex;
-}
-
-.post {
-  margin: 0 auto;
-  width: 750px;
-}
-
-.btn_like.active {
-  display: inline-block;
+.post-list {
+  display: block;
+  .post {
+    margin: 0 auto;
+    width: 750px;
+  }
 }
 
 .btn_like {
   display: none;
+  &.active {
+    display: inline-block;
+  }
 }

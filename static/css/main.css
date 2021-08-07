@@ -56,18 +56,16 @@ ul {
   -o-transition: all 0.25s cubic-bezier(1, 0.01, 0.32, 1);
   transition: all 0.25s cubic-bezier(1, 0.01, 0.32, 1); }
 
-.post-content {
-  display: flex; }
-
-.post {
-  margin: 0 auto;
-  width: 750px; }
-
-.btn_like.active {
-  display: inline-block; }
+.post-list {
+  display: block; }
+  .post-list .post {
+    margin: 0 auto;
+    width: 750px; }
 
 .btn_like {
   display: none; }
+  .btn_like.active {
+    display: inline-block; }
 
 .my-page {
   display: flex; }
@@ -75,6 +73,10 @@ ul {
 .my-page-header {
   margin: 0 auto;
   width: 750px; }
+  .my-page-header .follow_btn {
+    display: none; }
+    .my-page-header .follow_btn.active {
+      display: inline-block; }
 
 .my-page-post {
   width: 750px;
@@ -87,18 +89,18 @@ ul {
       width: 100%; }
 
 body {
-  background-color: gray; }
+  background-color: lightgray; }
 
-div.header {
+.header {
   border-bottom: 1px solid black;
   display: flex; }
-  div.header .logo {
+  .header .logo {
     flex: 0 0 auto;
     width: 20%; }
-  div.header .search {
+  .header .search {
     flex: 0 0 auto;
     width: 60%; }
-  div.header .profile {
+  .header .profile {
     flex: 0 0 auto;
     width: 20%; }
 

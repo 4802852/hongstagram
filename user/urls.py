@@ -8,4 +8,5 @@ urlpatterns = [
     path("signup/", views.signup_view, name="signup"),
     path("logout/", views.logout_view, name="logout"),
     path("profile-update/", views.profile_update_view, name="profile-update"),
+    path("post/profile/<str:username>/follow", views.FollowView.as_view(), name="user-follow"),
 ]

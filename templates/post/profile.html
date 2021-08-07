@@ -5,11 +5,18 @@
     <div class="my-page-header">
       profile<br>
       {{profile_user.get_username}}<br>
-      following / followed<br>
-      follow!<br>
+      following
+      {{ profile_user.following.all.count }}
+      / followed
+      {{ profile_user.followed.all.count }}<br>
       {% if mypage %}
         <a href="{% url 'profile-update' %}">edit profile</a><br>
         <a href="">edit password</a>
+      {% else %}
+        <a href="{% url 'user-follow' profile_user.username %}">
+          <div class="follow_btn {% if user not in profile_user.followed.all %} active {% endif %}">팔로우!</div>
+          <div class="follow_btn {% if user in profile_user.followed.all %} active {% endif %}">팔로우 취소!</div>
+        </a>
       {% endif %}
       <div class="my-page-post">
         {% if post_list %}

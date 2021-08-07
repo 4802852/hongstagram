@@ -9,13 +9,30 @@
             <a href="{{post.writer.get_absolute_url}}">{{post.writer}}</a>
           </div>
           <div>
-            <div>
-              {% for photo in post.photo_set.all %}
-                {% if forloop.counter == 1 %}
-                  <img src="{{photo.image.url}}"/>
-                {% endif %}
-              {% endfor %}
-            </div>
+          <div>
+          {% for photo in post.photo_set.all %}
+                    <li class="item">
+                      <img src="{{photo.image.url}}"/>
+                    </li>
+                  {% endfor %}
+          </div>
+            {% comment %} <div class="wrapper">
+              <div class="container">
+                <ul class="slider">
+                  {% for photo in post.photo_set.all %}
+                    <li class="item">
+                      <img src="{{photo.image.url}}"/>
+                    </li>
+                  {% endfor %}
+                </ul>
+                <!--controls-->
+                <div class="btn">
+                  <a class="prev" style="text-decoration: none;">&#10094;</a>
+                  <a class="next" style="text-decoration: none;">&#10095;</a>
+                </div>
+                <!--controls-->
+              </div>
+            </div> {% endcomment %}
           </div>
           <div id="like">
             <a href="{% url 'post-like' post.id %}">
