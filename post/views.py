@@ -46,7 +46,6 @@ def post_detail_view(request, pk):
         post_auth = True
     else:
         post_auth = False
-
     context = {"post": post, "post_auth": post_auth}
     return render(request, "post/post_detail.html", context)
 

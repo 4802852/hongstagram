@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post
+from .models import Comment, Post
 
 
 class NewPostForm(forms.ModelForm):
@@ -16,6 +16,25 @@ class NewPostForm(forms.ModelForm):
 
     class Meta:
         model = Post
+        fields = [
+            "text",
+        ]
+
+
+class NewCommentForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(NewCommentForm, self).__init__(*args, **kwargs)
+        self.fields["text"].label = "내용"
+        self.fields["text"].widget.attrs.update(
+            {
+                "placeholder": "내용을 입력해주세요.",
+                "class": "form-control",
+                "autofocus": True,
+            }
+        )
+
+    class Meta:
+        model = Comment
         fields = [
             "text",
         ]

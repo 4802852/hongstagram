@@ -67,3 +67,18 @@ class Photo(models.Model):
         format="JPEG",
         options={"quality": 90},
     )
+
+
+class Comment(models.Model):
+    writer = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        verbose_name="작성자",
+    )
+    post = models.ForeignKey(Post, null=True, blank=True, on_delete=models.CASCADE)
+    text = models.TextField(max_length=500)
+
+    def __str__(self):
+        return self.id
