@@ -11,4 +11,11 @@ urlpatterns = [
     path("<int:pk>/like", views.PostLike.as_view(), name="post-like"),
     path("search/", views.search, name="search"),
     path("profile/<str:username>/", views.profile_page, name="profile"),
+    # Comment
+    path("<int:pk>/comment", views.comment_create, name="comment_create"),
+    path(
+        "<int:pk>/comment/<int:comment_id>/delete",
+        views.comment_delete,
+        name="comment_delete",
+    ),
 ]

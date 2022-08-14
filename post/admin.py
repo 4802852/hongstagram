@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Post, Photo
+from .models import Post, Photo, Comment
 
 
 class PhotoInline(admin.TabularInline):
@@ -19,3 +19,6 @@ class PostAdmin(admin.ModelAdmin):
     inlines = [
         PhotoInline,
     ]
+
+
+admin.site.register(Comment)

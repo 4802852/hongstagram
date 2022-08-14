@@ -79,6 +79,3 @@ class Comment(models.Model):
     )
     post = models.ForeignKey(Post, null=True, blank=True, on_delete=models.CASCADE)
     text = models.TextField(max_length=500)
-
-    def __str__(self):
-        return self.id

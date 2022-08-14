@@ -1,56 +1,56 @@
-{% extends 'post/post_base.html' %}
-{% block contents2 %}
-  <div class="post-content">
-    <div class="post">
-      <div>
-        <div class="wrapper">
-          <div class="container">
-            <ul class="slider">
-              {% for photo in post.photo_set.all %}
-                <li class="item">
-                  <img src="{{photo.image.url}}"/>
-                </li>
-              {% endfor %}
-            </ul>
-            <!--controls-->
-            <div class="btn">
-              <a class="prev" style="text-decoration: none;">&#10094;</a>
-              <a class="next" style="text-decoration: none;">&#10095;</a>
-            </div>
-            <!--controls-->
+{% extends 'post/post_base.html' %} {% block contents2 %}
+<div class="post-content">
+  <div class="post">
+    <div>
+      <div class="wrapper">
+        <div class="container">
+          <ul class="slider">
+            {% for photo in post.photo_set.all %}
+            <li class="item">
+              <img src="{{photo.image.url}}" />
+            </li>
+            {% endfor %}
+          </ul>
+          <!--controls-->
+          <div class="btn">
+            <a class="prev" style="text-decoration: none">&#10094;</a>
+            <a class="next" style="text-decoration: none">&#10095;</a>
           </div>
+          <!--controls-->
         </div>
       </div>
-      <div id="like">
-        <a href="{% url 'post-like' post.id %}">
-          <div class="btn_like {% if user not in post.like.all %} active {% endif %}">좋아요!</div>
-          <div class="btn_like {% if user in post.like.all %} active {% endif %}">좋아요 취소!</div>
-        </a>
-        {% if post.like.all.count == 0 %}
-          <span></span>
-        {% elif post.like.all.count >= 5 %}
-          <span>{{ post.like.all.count }}
-            명이 좋아합니다.</span>
-        {% else %}
-          {% for likeuser in post.like.all %}
-            {{likeuser}}
-          {% endfor %}
-          님이 좋아합니다.
-        {% endif %}
-      </div>
-      <div>
-        <a href="{{post.writer.get_absolute_url}}">{{post.writer}}</a>
-        /
-        {{post.text}}
-      </div>
-      <div>
-        {% for tag in post.hashtags.all %}{{tag}}
-        {% endfor %}
-      </div>
-      <div>
-        <a href="{% url 'post-delete' post.id %}">delete post</a><br>
-        <a href="{% url 'post-update' post.id %}">update post</a>
-      </div>
+    </div>
+    <div id="like">
+      <a href="{% url 'post-like' post.id %}">
+        <div class="btn_like {% if user not in post.like.all %} active {% endif %}">좋아요!</div>
+        <div class="btn_like {% if user in post.like.all %} active {% endif %}">좋아요 취소!</div>
+      </a>
+      {% if post.like.all.count == 0 %}
+      <span></span>
+      {% elif post.like.all.count >= 5 %}
+      <span>{{ post.like.all.count }} 명이 좋아합니다.</span>
+      {% else %} {% for likeuser in post.like.all %} {{likeuser}} {% endfor %} 님이 좋아합니다. {% endif %}
+    </div>
+    <div>
+      <a href="{{post.writer.get_absolute_url}}">{{post.writer}}</a>
+      / {{post.text}}
+    </div>
+    <div>{% for tag in post.hashtags.all %}{{tag}} {% endfor %}</div>
+    <div>
+      <p><b>댓글 목록</b></p>
+      {% for comment in comments %}
+      <li>
+        <a href="{{comment.writer.get_absolute_url}}">{{comment.writer}}</a> : {{comment.text}} :
+        <a href="{% url 'comment_delete' post.id comment.id %}">삭제하기</a>
+      </li>
+      {%empty%}
+      <p>아직 댓글이 없습니다.</p>
+      {% endfor %}
+    </div>
+    <div>
+      <a href="{% url 'post-delete' post.id %}">delete post</a><br />
+      <a href="{% url 'post-update' post.id %}">update post</a>
     </div>
   </div>
+</div>
 {% endblock %}

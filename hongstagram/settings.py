@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "user",
     "post",
     "sass_processor",
+    "django_extensions",
 ]
 
 MIDDLEWARE = [

@@ -3,13 +3,13 @@ import os
 from django.contrib import messages
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from hongstagram import settings
-from .forms import NewPostForm
+from .forms import NewCommentForm, NewPostForm
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import generic
 from django.db.models import Q
 from urllib.parse import urlparse
 
-from .models import Photo, Post
+from .models import Photo, Post, Comment
 from user.models import User
 
 
@@ -42,11 +42,12 @@ class PostListView(generic.ListView):
 
 def post_detail_view(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    comments = post.comment_set.order_by("-id").all()
     if request.user == post.writer:
         post_auth = True
     else:
         post_auth = False
-    context = {"post": post, "post_auth": post_auth}
+    context = {"post": post, "post_auth": post_auth, "comments": comments}
     return render(request, "post/post_detail.html", context)
 
 
@@ -71,7 +72,7 @@ def post_new(request):
 
 def post_delete(request, pk):
     post = Post.objects.get(id=pk)
-    if post.writer == request.user or request.user.level == "0":
+    if post.writer == request.user or request.user.is_superuser == True:
         photos = Photo.objects.filter(post=post)
         for photo in photos:
             os.remove(os.path.join(settings.MEDIA_ROOT, photo.image.path))
@@ -163,3 +164,26 @@ class PostLike(generic.base.View):
             return HttpResponseRedirect(path)
         else:
             return HttpResponseForbidden()
+
+
+def comment_create(request, pk):
+    if request.method == "POST":
+        form = NewCommentForm(request.POST)
+        if form.is_valid:
+            comment = form.save(commit=False)
+            comment.writer = request.user
+            comment.save()
+            return redirect("post-detail", pk)
+    # else:
+    #     form = NewCommentForm()
+
+
+def comment_delete(request, pk, comment_id):
+    comment = Comment.objects.get(pk=comment_id)
+    if comment.writer == request.user or request.user.is_superuser == True:
+        comment.delete()
+        messages.success(request, "삭제되었습니다.")
+        return redirect("post-detail", pk)
+    else:
+        messages.error(request, "본인의 게시글만 삭제할 수 있습니다.")
+    return redirect("post-detail", pk)
