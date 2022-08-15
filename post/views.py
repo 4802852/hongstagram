@@ -171,11 +171,13 @@ def comment_create(request, pk):
         form = NewCommentForm(request.POST)
         if form.is_valid:
             comment = form.save(commit=False)
+            post = Post.objects.get(pk=pk)
+            comment.post = post
             comment.writer = request.user
             comment.save()
             return redirect("post-detail", pk)
-    # else:
-    #     form = NewCommentForm()
+    else:
+        form = NewCommentForm()
 
 
 def comment_delete(request, pk, comment_id):

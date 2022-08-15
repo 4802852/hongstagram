@@ -37,6 +37,13 @@
     </div>
     <div>{% for tag in post.hashtags.all %}{{tag}} {% endfor %}</div>
     <div>
+      <form action="{% url 'comment_create' post.id %}" method="POST">
+        {% csrf_token %}
+        <input type="text" name="text" />
+        <input class="btn" type="submit" value="댓글달기" />
+      </form>
+    </div>
+    <div>
       <p><b>댓글 목록</b></p>
       {% for comment in comments %}
       <li>

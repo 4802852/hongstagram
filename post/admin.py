@@ -7,6 +7,10 @@ class PhotoInline(admin.TabularInline):
     model = Photo
 
 
+class CommentInline(admin.TabularInline):
+    model = Comment
+
+
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ("id", "writer", "date")
@@ -18,7 +22,10 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ("writer", "date")
     inlines = [
         PhotoInline,
+        CommentInline,
     ]
 
 
-admin.site.register(Comment)
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ("id", "writer")
